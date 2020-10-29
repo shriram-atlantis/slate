@@ -1,241 +1,275 @@
----
-title: API Reference
+--- 
 
-language_tabs: # must be one of https://git.io/vQNgJ
+title: Yodaa 
+
+language_tabs: 
   - shell
-  - ruby
   - python
   - javascript
 
-toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
-  - <a href='https://github.com/slatedocs/slate'>Documentation Powered by Slate</a>
+toc_footers: 
+   - <a href='#'>Sign Up for a Developer Key</a> 
+   - <a href='https://github.com/lavkumarv'>Documentation Powered by lav</a> 
 
-includes:
-  - errors
+includes: 
+   - errors 
 
-search: true
+search: true 
 
-code_clipboard: true
----
+--- 
 
-# Introduction
+# Introduction 
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+API documentation for Yodaa http://yodaa.club/ 
 
-We have language bindings in Shell, Ruby, Python, and JavaScript! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+**Version:** 1.0.0 
 
-This example API documentation page was created with [Slate](https://github.com/slatedocs/slate). Feel free to edit it and use it as a base for your own API's documentation.
+# Authentication 
 
-# Authentication
+|apiKey|*API Key*|
+|---|---| 
 
-> To authorize, use this code:
+|oauth2|*OAuth 2.0*|
+|---|---| 
 
-```ruby
-require 'kittn'
+# Get Active Batch
+## ***GET*** 
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
+**Summary:** fetches information for the active user batches
+
+**Description:** 
+
+### HTTP Request 
+`GET /getactivebatch` 
+
+**Responses**
+
+| Code | Description |
+| ---- | ----------- |
+| default | 200 successful operation |
+
+# Create new User
+## ***POST*** 
+
+**Summary:** Creates new User
+
+**Description:** 
+
+### HTTP Request 
+`POST /users/` 
+
+```shell
+curl --location --request POST 'https://stagebeta5.com/api//users/' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+	"phone_number":"917471182501",
+	"usertype":"parent"
+}'
 ```
 
 ```python
-import kittn
+import requests
 
-api = kittn.authorize('meowmeowmeow')
+url = "https://stagebeta5.com/api//users/"
+
+payload = "{\n\t\"phone_number\":\"917471182501\",\n\t\"usertype\":\"parent\"\n}"
+headers = {
+  'Content-Type': 'application/json'
+}
+
+response = requests.request("POST", url, headers=headers, data = payload)
+
+print(response.text.encode('utf8'))
 ```
-
-```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here" \
-  -H "Authorization: meowmeowmeow"
-```
-
 ```javascript
-const kittn = require('kittn');
+var myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/json");
 
-let api = kittn.authorize('meowmeowmeow');
+var raw = JSON.stringify({"phone_number":"917471182501","usertype":"parent"});
+
+var requestOptions = {
+  method: 'POST',
+  headers: myHeaders,
+  body: raw,
+  redirect: 'follow'
+};
+
+fetch("https://stagebeta5.com/api//users/", requestOptions)
+  .then(response => response.text())
+  .then(result => console.log(result))
+  .catch(error => console.log('error', error));
 ```
-
-> Make sure to replace `meowmeowmeow` with your API key.
-
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
-
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
-
-`Authorization: meowmeowmeow`
-
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
-
-# Kittens
-
-## Get All Kittens
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
-
-```shell
-curl "http://example.com/api/kittens" \
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
-```
-
-> The above command returns JSON structured like this:
-
-```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
-```
-
-This endpoint retrieves all kittens.
-
-### HTTP Request
-
-`GET http://example.com/api/kittens`
-
-### Query Parameters
-
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
-
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-## Get a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2" \
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
-```
-
-> The above command returns JSON structured like this:
 
 ```json
 {
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
+    "status": "success",
+    "details": {
+        "id": "NTM4",
+        "cust_id": "YOD0000021A",
+        "first_name": "",
+        "last_name": "",
+        "email": null,
+        "instagram_handle": null,
+        "snapchat_handle": null,
+        "physical_card_order_status": null,
+        "card_pin_set": false,
+        "usertype": "parent",
+        "phone_number": "917471182501",
+        "father_name": null,
+        "plan_status": null,
+        "welcome_bonus": null,
+        "invited_relationship": null,
+        "gender": null,
+        "physical_card_theme": null,
+        "joining_status": "accepted",
+        "prepaid_card_masked": null,
+        "date_of_birth": null,
+        "pan_card_number": null,
+        "phone_verified": null,
+        "email_verified": null,
+        "biometric_preference": false,
+        "firebase_ref_id": null,
+        "user_image_url": null,
+        "pin_code": null,
+        "own_ref": null,
+        "level": "",
+        "nps_datetime": null,
+        "ref_by_id": null,
+        "kyc_status": null,
+        "requested_datetime": null,
+        "row_created": "2020-10-29T12:14:21.130626Z",
+        "user_since": "2020-10-29T12:14:21.130626Z",
+        "onboarding_state": null,
+        "is_set_password": false
+    }
 }
 ```
 
-This endpoint retrieves a specific kitten.
+**Parameters**
 
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
+| Name | Located in | Description | Required | Type |
+| ---- | ---------- | ----------- | -------- | ---- |
+| body | body | List of user object | Yes |  |
 
-### HTTP Request
+**Responses**
 
-`GET http://example.com/kittens/<ID>`
+| Code | Description |
+| ---- | ----------- |
+| 200 | Successfully created User|
+| 400 | Bad request|
+| 500 | Internal server error|
 
-### URL Parameters
+# /USERS/{USERID}/
+## ***PUT*** 
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
+**Summary:** Verify phone OTP
 
-## Delete a Specific Kitten
+**Description:** This can only be done by the logged in user.
 
-```ruby
-require 'kittn'
+### HTTP Request 
+`***PUT*** /users/{userid}/` 
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.delete(2)
-```
+**Parameters**
 
-```python
-import kittn
+| Name | Located in | Description | Required | Type |
+| ---- | ---------- | ----------- | -------- | ---- |
+| userid | path | name that need to be updated | Yes | string |
+| body | body | Updated user object | Yes |  |
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
-```
+**Responses**
 
-```shell
-curl "http://example.com/api/kittens/2" \
-  -X DELETE \
-  -H "Authorization: meowmeowmeow"
-```
+| Code | Description |
+| ---- | ----------- |
+| 400 | Invalid user supplied |
+| 405 | Not Allowed |
 
-```javascript
-const kittn = require('kittn');
+## ***DELETE*** 
 
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
-```
+**Summary:** Delete user
 
-> The above command returns JSON structured like this:
+**Description:** This can only be done by the logged in user.
 
-```json
-{
-  "id": 2,
-  "deleted" : ":("
-}
-```
+### HTTP Request 
+`***DELETE*** /users/{userid}/` 
 
-This endpoint deletes a specific kitten.
+**Parameters**
 
-### HTTP Request
+| Name | Located in | Description | Required | Type |
+| ---- | ---------- | ----------- | -------- | ---- |
+| userid | path | The name that needs to be deleted | Yes | string |
 
-`DELETE http://example.com/kittens/<ID>`
+**Responses**
 
-### URL Parameters
+| Code | Description |
+| ---- | ----------- |
+| 400 | Invalid username supplied |
+| 404 | User not found |
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to delete
+# /USER/LOGIN
+## ***GET*** 
 
+**Summary:** Logs user into the system
+
+**Description:** 
+
+### HTTP Request 
+`***GET*** /user/login` 
+
+**Parameters**
+
+| Name | Located in | Description | Required | Type |
+| ---- | ---------- | ----------- | -------- | ---- |
+| username | query | The user name for login | Yes | string |
+| password | query | The password for login in clear text | Yes | string |
+
+**Responses**
+
+| Code | Description |
+| ---- | ----------- |
+| 200 | successful operation |
+| 400 | Invalid username/password supplied |
+
+# /USER/LOGOUT
+## ***GET*** 
+
+**Summary:** Logs out current logged in user session
+
+**Description:** 
+
+### HTTP Request 
+`***GET*** /user/logout` 
+
+**Parameters**
+
+| Name | Located in | Description | Required | Type |
+| ---- | ---------- | ----------- | -------- | ---- |
+
+**Responses**
+
+| Code | Description |
+| ---- | ----------- |
+| default | successful operation |
+
+# /USER
+## ***POST*** 
+
+**Summary:** Create user
+
+**Description:** This can only be done by the logged in user.
+
+### HTTP Request 
+`***POST*** /user` 
+
+**Parameters**
+
+| Name | Located in | Description | Required | Type |
+| ---- | ---------- | ----------- | -------- | ---- |
+| body | body | Created user object | Yes |  |
+
+**Responses**
+
+| Code | Description |
+| ---- | ----------- |
+| default | successful operation |
+
+<!-- Converted with the swagger-to-slate https://github.com/lavkumarv/swagger-to-slate -->
